@@ -38,6 +38,7 @@ pub fn run_container(rootfs: &str, command: &str, command_args: Vec<&str>){
 	const STACK_SIZE: usize = 1024 * 1024;
 	let stack: &mut [u8; STACK_SIZE] = &mut [0; STACK_SIZE];
 	
+	// Box でヒープに割り当て、スコープを抜けると破棄される、ここでは割当をしてるだけ
 	let cb = Box::new(|| spawn_child(hostname, group_name, rootfs, command, command_args.as_slice()));
 
 	//See `man clone`

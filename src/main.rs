@@ -9,13 +9,13 @@ mod mount;
 mod namespace;
 
 fn run(rootfs: Option<String>, command_string: Option<String>){
-	let rootfs = rootfs.unwrap();
+	let rootfs = rootfs.unwrap(); // unwrap() は Ok なら値を、Err なら panic
 	let command_string = command_string.unwrap();
 
-	let child_command_buffer = command_string.split(" ");
-	let mut child_command_vector = child_command_buffer.collect::<Vec<&str>>();
+	let child_command_buffer = command_string.split(" "); // " " で区切られたイテレータの生成 
+	let mut child_command_vector = child_command_buffer.collect::<Vec<&str>>(); // Vec は可変長配列, collect で Vec へ入れてる
 	let command = child_command_vector[0];
-	child_command_vector.drain(0..1);
+	child_command_vector.drain(0..1); // child_command_vector 配列の 0 から 1 取り出して削除
 
 	runtime::run_container(&rootfs, command, child_command_vector);
 }
